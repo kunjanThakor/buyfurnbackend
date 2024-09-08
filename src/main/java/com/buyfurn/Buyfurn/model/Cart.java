@@ -1,47 +1,69 @@
 package com.buyfurn.Buyfurn.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.PrePersist;
+import jakarta.persistence.ManyToOne;
 
 
 @Entity
 public class Cart {
-	@Id
-	private String id;
-	
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "product_id")
-	List<Product> products = new ArrayList<Product>();
-	
-	 @PrePersist
-	    public void generateId() {
-	        if (this.id == null) {
-	            this.id = UUID.randomUUID().toString();
-	        }
-	    }
 
-	public String getId() {
-		return id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long cartId;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
+    
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    private int quantity;
+
+    public int getQuantity() {
+		return quantity;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 
-	public List<Product> getProducts() {
-		return products;
+	public long getCartId() {
+        return cartId;
+    }
+
+    public void setCartId(long id) {
+        this.cartId = id;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Cart(Product product, User user) {
+        this.product = product;
+        this.user = user;
+    }
+
+	public Cart() {
 	}
 
-	public void setProducts(List<Product> products) {
-		this.products = products;
-	}
+    
 }

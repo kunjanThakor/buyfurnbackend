@@ -1,9 +1,11 @@
 package com.buyfurn.Buyfurn.controller;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,8 +40,8 @@ public class ProductController {
 	}
 	 
 	 @GetMapping("/getallproducts")
-	 public List<Product> getAllProducts(){
-		 return productServices.getAllProducts();
+	 public List<Product> getAllProducts(@RequestParam(defaultValue = "0") int pageNumber,@RequestParam(defaultValue = "") String searchKey){
+		 return productServices.getAllProducts(pageNumber,searchKey);
 	 }
 	 
 	 @GetMapping("/getbyid/{id}")
@@ -54,12 +57,22 @@ public class ProductController {
 	 }
 	 
 	 @DeleteMapping("/admin/deletebyid/{id}")
-	    public ResponseEntity<HttpStatus> deleteById(@PathVariable Long id) {
+	 public ResponseEntity<HttpStatus> deleteById(@PathVariable Long id) {
 	        String response = productServices.deleteById(id);
 	        if ("Product Deleted !!".equals(response)) {
 	            return new ResponseEntity<>(HttpStatus.OK);
 	        } else {
 	            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	        }
+	  }
+	 
+	 @GetMapping("/user/getproductdetails/{isSingleProductCheckout}/{productId}")
+	 public List<Product> getProdctDetails(Principal principal, @PathVariable boolean isSingleProductCheckout,@PathVariable long productId) {
+		return productServices.getProductDetails(principal,isSingleProductCheckout, productId);
+	 }
+	 
+	 @GetMapping("/latest")
+	    public List<Product> getLatestProducts() {
+	        return productServices.getLatestProducts();
 	    }
 }

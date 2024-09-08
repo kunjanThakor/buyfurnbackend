@@ -1,9 +1,11 @@
 package com.buyfurn.Buyfurn.model;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.ElementCollection;
 
 @Entity
@@ -26,6 +29,13 @@ public class Product {
     @JoinColumn(name = "product_id")
     private List<ProductImages> productImages = new ArrayList<>();
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Cart> carts = new ArrayList<>();
+    
+    
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderDetails> orderDetails = new ArrayList<>();
+    
     private double price;
     private String warranty;
     private String category;
@@ -39,6 +49,15 @@ public class Product {
     private String careAndMaintenance;
     private String stockStatus;
 
+    
+    @Column(name = "created_date", updatable = false)
+    private LocalDateTime createdDate;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdDate = LocalDateTime.now();
+    }
+    
     public String getStockStatus() {
 		return stockStatus;
 	}

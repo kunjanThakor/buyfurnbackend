@@ -20,7 +20,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@NoArgsConstructor
 public class User {
 
 	@Id
