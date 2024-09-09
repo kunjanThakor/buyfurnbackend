@@ -110,10 +110,15 @@ public class UserService {
 	    }
 
 	
-	private UserImage uploadImage(MultipartFile image) throws IOException {
-		UserImage userImage=new UserImage(image.getOriginalFilename(), image.getContentType(), image.getBytes());
-		return userImage;
-	}
+	 private UserImage uploadImage(MultipartFile image) {
+		    try {
+		        UserImage userImage = new UserImage(image.getOriginalFilename(), image.getContentType(), image.getBytes());
+		        return userImage;
+		    } catch (IOException e) {
+		        System.err.println("Error occurred while uploading image: " + e.getMessage());
+		        return null;
+		    }
+		}
 
 	public User getUserById(Long userId) {
 		
