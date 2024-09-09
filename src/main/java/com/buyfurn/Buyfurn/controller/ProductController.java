@@ -40,8 +40,9 @@ public class ProductController {
 	}
 	 
 	 @GetMapping("/getallproducts")
-	 public List<Product> getAllProducts(@RequestParam(defaultValue = "0") int pageNumber,@RequestParam(defaultValue = "") String searchKey){
-		 return productServices.getAllProducts(pageNumber,searchKey);
+	 public List<Product> getAllProducts(@RequestParam(defaultValue = "0") int pageNumber,@RequestParam(defaultValue = "") String searchKey,
+			 @RequestParam(defaultValue = "") String searchCategory ){
+		 return productServices.getAllProducts(pageNumber,searchKey,searchCategory);
 	 }
 	 
 	 @GetMapping("/getbyid/{id}")
