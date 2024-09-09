@@ -52,19 +52,24 @@ public class ProductServices {
 		return productImages;
 	}
 
-	public List<Product> getAllProducts(int pageNumber,String searchKey) {
-		Pageable pageable=PageRequest.of(pageNumber, 12);
-		
-		if(searchKey.equals("")) {
-			Page<Product> paginatedProducts = productRepository.findAll(pageable);
-			List<Product> products = paginatedProducts.getContent();
-			return products;
-		}
-		else {
-			return productRepository.findByTitle(searchKey);
-		}
-		
+	public List<Product> getAllProducts(int pageNumber, String searchKey, String searchCategory) {
+	    Pageable pageable = PageRequest.of(pageNumber, 12);
+	    
+	    if (searchKey.equals("") && searchCategory.equals("")) {
+	        Page<Product> paginatedProducts = productRepository.findAll(pageable);
+	        return paginatedProducts.getContent();
+	    }
+	    else if (!searchCategory.equals("") && searchKey.equals("")) {
+	        return productRepository.findByCategory(searchCategory);
+	    }
+	    else if (!searchCategory.equals("") && !searchKey.equals("")) {
+	        return productRepository.findByTitleContainingIgnoreCaseAndCategory(searchKey, searchCategory).getContent();
+	    }
+	    else {
+	        return productRepository.findByTitleContainingIgnoreCase(searchKey);
+	    }
 	}
+
 
 	public Product getById(Long id) {
 		return productRepository.findById(id).get();
