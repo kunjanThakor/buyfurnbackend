@@ -66,9 +66,9 @@ public class UserController {
 
 			return new ResponseEntity<String>(HttpStatus.FOUND);
 		}
-		userService.generateOtp(email);
+		String otp = userService.generateOtp(email);
 
-		return new ResponseEntity<String>(userService.generateOtp(email), HttpStatus.OK);
+		return new ResponseEntity<String>(otp, HttpStatus.OK);
 	}
 
 	@PostMapping("/verify-otp")
@@ -97,16 +97,5 @@ public class UserController {
 		return userService.getUser(email);
 	}
 	
-	@GetMapping("/forAdmin")
-	@PreAuthorize("hasRole('ADMIN')")
-	public String forAdmin() {
-	    return "This URL is for Admin";
-	}
-	
-	@GetMapping("/forUser")
-	@PreAuthorize("hasRole('USER')")
-	public String forUser() {
-		return "This URL is for User";
-	}
 
 }
