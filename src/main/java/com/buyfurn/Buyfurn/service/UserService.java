@@ -53,7 +53,6 @@ public class UserService {
 	public String generateOtp(String email) {
 		String otp = String.valueOf(100000 + random.nextInt(900000)); // Generate 6-digit OTP
 		otpStorage.put(email, otp);
-		System.out.println(otpStorage);
 		return otp;
 	}
 

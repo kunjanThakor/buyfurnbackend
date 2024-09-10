@@ -45,6 +45,12 @@ public class ProductController {
 		 return productServices.getAllProducts(pageNumber,searchKey,searchCategory);
 	 }
 	 
+	 @GetMapping("/admin/getAllProductsForAdmin")
+	 public List<Product> getAllProductsForAdmin(@RequestParam(defaultValue = "0") int pageNumber,@RequestParam(defaultValue = "") String searchKey,
+			 @RequestParam(defaultValue = "") String searchCategory ){
+		 return productServices.getAllProducts(pageNumber,searchKey,searchCategory);
+	 }
+	 
 	 @GetMapping("/getbyid/{id}")
 	 public Product getbyId(@PathVariable Long id) {
 		 return productServices.getById(id);
